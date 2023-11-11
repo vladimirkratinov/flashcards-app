@@ -29,7 +29,6 @@ body {
     background-color: white;
     transform-style: preserve-3d;
     cursor: pointer;
-    height: 150px;
     transition: 150ms;
     transform: 
         perspective(1000px) 
