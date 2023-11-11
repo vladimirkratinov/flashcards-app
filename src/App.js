@@ -5,7 +5,14 @@ import axios from "axios";
 
 function App() {
   const [flashcards, setFlashcards] = useState(SAMPLE_FLASHCARDS);
-  const categoryEl = useRef()
+  const categoryEl = useRef();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://opentdb.com/api_category.php").then((res) => {
+      setCategories(res.data.trivia_categories);
+    });
+  }, []);
 
   // API Call
   useEffect(() => {
@@ -35,23 +42,28 @@ function App() {
   }
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
   }
 
   return (
     <>
-    <form className="header" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlForm="category">Category</label>
-        <select id="category" ref={categoryEl}>
-
-        </select>
-        
+      <form className="header" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
+          <select id="category" ref={categoryEl}>
+            {categories.map((category) => {
+              return (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      </form>
+      <div className="container">
+        <FlashcardList flashcards={flashcards} />
       </div>
-    </form>
-    <div className="container">
-      <FlashcardList flashcards={flashcards} />
-    </div>
     </>
   );
 }
